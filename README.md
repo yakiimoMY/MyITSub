@@ -68,6 +68,17 @@ npm run dev:cloudflare
 
 If you want to deploy through Cloudflare Pages instead, publish the `dist/client` folder as the site output directory.
 
+### Cloudflare Pages GitHub Action
+
+This repo is also ready for Cloudflare Pages deployment via GitHub Actions.
+
+1. Add these secrets to your GitHub repository:
+   - `CF_API_TOKEN`
+   - `CF_ACCOUNT_ID`
+   - `CF_PAGES_PROJECT_NAME`
+
+2. Push to `main` and GitHub Actions will build and deploy `dist/client`.
+
 Use digits only with the country code (e.g. `601XXXXXXXX` for Malaysia).
 
 ### Subscription Data
