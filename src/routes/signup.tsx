@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { clientSignup } from '../lib/auth'
-import { AlertCircle, UserPlus } from 'lucide-react'
+import { AlertCircle, UserPlus, CheckCircle } from 'lucide-react'
 
 export const Route = createFileRoute('/signup')({
   component: SignupPage,
@@ -13,6 +13,7 @@ function SignupPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,7 +23,7 @@ function SignupPage() {
     try {
       const result = await clientSignup(email, password)
       if (result.success) {
-        navigate({ to: '/login' })
+        setSuccess(true)
       } else {
         setError(result.error || 'Signup failed')
       }
@@ -31,6 +32,30 @@ function SignupPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (success) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 sm:p-8 text-center">
+          <div className="flex items-center justify-center mb-8">
+            <CheckCircle className="w-12 h-12 text-green-600 mr-3" />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+            Signup Successful!
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Please check your email for verification. Once verified, you can log in.
+          </p>
+          <a
+            href="/login"
+            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
+          >
+            Go to Login
+          </a>
+        </div>
+      </div>
+    )
   }
 
   return (
