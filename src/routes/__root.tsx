@@ -14,7 +14,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'IT Support Portal – My Subscriptions',
+        title: 'Yakiimo Portal – My Subscriptions',
       },
     ],
   }),
