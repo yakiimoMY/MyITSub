@@ -41,11 +41,8 @@ function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 sm:p-8">
         <div className="flex flex-col items-center justify-center mb-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white text-xl font-black">
-            Y
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-4">
-            Yakiimo Sign In
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            Sign In
           </h1>
         </div>
 
