@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getUser, login, logout, signup, update, type User } from '@netlify/identity'
+import { getUser, login, logout, signup, type User } from '@netlify/identity'
 
 export type { User as IdentityUser }
 
@@ -56,13 +56,8 @@ export async function clientSignup(email: string, password: string) {
  * Client-side update user metadata
  */
 export async function updateUserMetadata(metadata: Record<string, any>) {
-  try {
-    const user = await getUser()
-    if (!user) throw new Error('No user logged in')
-    user.user_metadata = { ...user.user_metadata, ...metadata }
-    await update(user)
-    return { success: true }
-  } catch (error) {
-    return { success: false, error: (error as Error).message }
-  }
+  // Note: @netlify/identity does not support updating user metadata client-side.
+  // This requires server-side API calls or admin access.
+  // For Cloudflare deployment, replace with appropriate auth provider.
+  throw new Error('User metadata update not supported in current setup')
 }
