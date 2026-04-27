@@ -5,7 +5,9 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { getUser, logout as nlLogout, onAuthChange, type User } from '@netlify/identity'
+import { User } from '@supabase/supabase-js'
+import { supabase } from './supabase'
+import { clientLogout } from './auth'
 
 interface IdentityContextValue {
   user: User | null
@@ -21,22 +23,24 @@ export function IdentityProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    // Initialize from current session
-    getUser().then((u) => {
-      setUser(u ?? null)
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
       setReady(true)
     })
 
     // Subscribe to auth changes
-    const unsubscribe = onAuthChange((u) => {
-      setUser(u ?? null)
-    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null)
+      }
+    )
 
-    return unsubscribe
+    return () => subscription.unsubscribe()
   }, [])
 
   const handleLogout = async () => {
-    await nlLogout()
+    await clientLogout()
     setUser(null)
   }
 

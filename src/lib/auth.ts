@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getUser, login, logout, signup, type User } from '@netlify/identity'
+import { User } from '@supabase/supabase-js'
+import { supabase } from './supabase'
 
 export type { User as IdentityUser }
 
@@ -9,8 +10,9 @@ export type { User as IdentityUser }
  */
 export const getServerUser = createServerFn({ method: 'GET' }).handler(
   async () => {
-    const user = await getUser()
-    return (user ?? null) as any
+    // Note: For Supabase, server-side auth needs JWT handling
+    // For now, returning null; adapt for Cloudflare Workers if needed
+    return null
   }
 )
 
@@ -33,8 +35,12 @@ export function isAdmin(user: User | null): boolean {
  */
 export async function clientLogin(email: string, password: string) {
   try {
-    const user = await login(email, password, true)
-    return { success: true, user }
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) throw error
+    return { success: true, user: data.user }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -45,8 +51,12 @@ export async function clientLogin(email: string, password: string) {
  */
 export async function clientSignup(email: string, password: string) {
   try {
-    const user = await signup(email, password)
-    return { success: true, user }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+    if (error) throw error
+    return { success: true, user: data.user }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -56,8 +66,21 @@ export async function clientSignup(email: string, password: string) {
  * Client-side update user metadata
  */
 export async function updateUserMetadata(metadata: Record<string, any>) {
-  // Note: @netlify/identity does not support updating user metadata client-side.
-  // This requires server-side API calls or admin access.
-  // For Cloudflare deployment, replace with appropriate auth provider.
-  throw new Error('User metadata update not supported in current setup')
+  try {
+    const { data, error } = await supabase.auth.updateUser({
+      data: metadata,
+    })
+    if (error) throw error
+    return { success: true, user: data.user }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+/**
+ * Client-side logout function
+ */
+export async function clientLogout() {
+  const { error } = await supabase.auth.signOut()
+  if (error) console.error('Logout error:', error)
 }
