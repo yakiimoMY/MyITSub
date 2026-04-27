@@ -1,0 +1,14 @@
+name = "myitsub"
+# Replace with your Cloudflare account ID
+account_id = ""
+compatibility_date = "2026-04-27"
+workers_dev = true
+route = ""
+zone_id = ""
+type = "javascript"
+
+[build]
+command = "npm run build"
+
+[site]
+bucket = "./dist/client"

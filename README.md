@@ -38,6 +38,36 @@ Open `src/routes/index.tsx` and update the constant near the top:
 const WHATSAPP_NUMBER = '60123456789'  // ← replace with your WhatsApp Business number
 ```
 
+### Cloudflare Deployment
+
+This repo includes a Cloudflare Wrangler config at `wrangler.toml` to deploy the built app as a Cloudflare Workers Site.
+
+1. Install Wrangler locally:
+
+```bash
+npm install -D wrangler
+```
+
+2. Set your Cloudflare account ID in `wrangler.toml`:
+
+```toml
+account_id = "YOUR_ACCOUNT_ID"
+```
+
+3. Build and publish:
+
+```bash
+npm run deploy:cloudflare
+```
+
+4. During local development with Cloudflare Workers:
+
+```bash
+npm run dev:cloudflare
+```
+
+If you want to deploy through Cloudflare Pages instead, publish the `dist/client` folder as the site output directory.
+
 Use digits only with the country code (e.g. `601XXXXXXXX` for Malaysia).
 
 ### Subscription Data

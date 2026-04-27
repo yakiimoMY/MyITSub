@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000",
-    "build": "vite build"
+    "build": "vite build",
+    "deploy:cloudflare": "npm run build && wrangler publish",
+    "dev:cloudflare": "wrangler dev"
   },
   "dependencies": {
     "@netlify/identity": "^1.0.0",
